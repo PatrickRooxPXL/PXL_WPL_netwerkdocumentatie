@@ -1,0 +1,40 @@
+enable
+configure terminal
+hostname router 1
+
+enable secret class
+service password-encryption
+
+line console 0
+password cisco
+Login
+
+# banner message of the day
+banner motd ^no unauthorised acces^
+ 
+ip domain-name netwerk.local
+crypto key generate rsa modulus 2048
+ip ssh version 2
+username admin privilege 15 secret cisco
+
+line vty 0 4
+password cisco 
+login
+transport input ssh
+
+#router 2
+interface GigabitEthernet 0/0/0
+ip address 192.168.1.1 255.255.255.0
+ipv6 address fd00:abcd:1234::1/64
+no shutdown
+
+#router 2
+interface GigabitEthernet 0/0/1
+ip address 192.168.1.129 255.255.255.128
+ipv6 address fd00:abcd:1234:1::1
+no shutdown
+
+ip routing
+ipv6 unicast-routing
+
+copy running-config startup-config
