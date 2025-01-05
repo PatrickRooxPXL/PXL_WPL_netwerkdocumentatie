@@ -1,0 +1,35 @@
+- SWITCH
+enable
+configure terminal
+hostname klas-1
+
+enable secret class
+service password-encryption
+
+line console 0
+password Cisco
+Login
+
+#banner message of the day 
+banner motd ^No unauthorised acces^
+
+ip domain-name netwerk.local
+crypto key generate rsa modulus 2048
+ip ssh version 2
+username admin privilege 15 secret cisco
+
+line vty 0 15
+password cisco
+login local
+transport input ssh
+
+# Interface configuration
+interface vlan 1
+ip address 192.168.1.1 255.255.255.0
+ipv6 address fd00:abcd:1234::1
+no shutdown
+
+# Default-gateway configuratie
+ip default-gateway 192.168.1.0
+
+copy running-config startup-config
